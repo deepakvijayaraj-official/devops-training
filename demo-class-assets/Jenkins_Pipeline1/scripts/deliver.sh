@@ -24,4 +24,4 @@
 # echo 'application (which Jenkins built using Maven) to the Jenkins UI.'
 # set -x
 # # java -jar target/${NAME}-${VERSION}.jar
-java -jar target/my-app-1.0-SNAPSHOT.jar
+java -jar /var/jenkins_home/workspace/Pipeline-1/simple-java-maven-apps/target/my-app-1.0-SNAPSHOT.jar
