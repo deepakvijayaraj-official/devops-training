@@ -32,21 +32,17 @@ pipeline {
                 }
             }
         }
-         stage('SonarQube Analysis') {
+
+        stage('SonarQube Analysis') {
             steps {
                 script {
+                    // 'tool' directive is used to define tools in declarative pipelines
                     def mvnHome = tool 'Maven'
-                    
-                    // Navigate to the correct directory with the POM file
-                    dir('simple-java-maven-apps') {
-                        // Use the 'withSonarQubeEnv' step with the configured SonarQube installation name
-                        withSonarQubeEnv('YourSonarQubeInstallationName') {
-                            sh "/usr/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=simple-java-maven-apps"
-                        }
+                    withSonarQubeEnv() {
+                        sh "/usr/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=simple-java-maven-apps"
                     }
                 }
             }
         }
-     
     }
 }
