@@ -33,16 +33,16 @@ pipeline {
             }
         }
 
-        node {
-  stage('SCM') {
-    checkout scm
-  }
-  stage('SonarQube Analysis') {
-    def mvn = tool 'Default Maven';
-    withSonarQubeEnv() {
-      sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=simple-java-maven-apps"
-    }
-  }
-}
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    // 'tool' directive is used to define tools in declarative pipelines
+                    def mvnHome = tool 'Default Maven'
+                    withSonarQubeEnv() {
+                        sh "${mvnHome}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=simple-java-maven-apps"
+                    }
+                }
+            }
+        }
     }
 }
