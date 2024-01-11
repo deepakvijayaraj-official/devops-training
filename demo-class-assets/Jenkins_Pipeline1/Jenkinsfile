@@ -5,6 +5,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
+                    // Using 'script' block for multiline shell commands
                     sh 'cd simple-java-maven-apps; mvn -B -DskipTests clean package'
                 }
             }
@@ -16,7 +17,7 @@ pipeline {
                     sh 'cd simple-java-maven-apps; mvn test'
                 }
             }
-            // Uncomment the following block if you want to publish JUnit test results
+            // You can uncomment the following block if you want to publish JUnit test results
             // post {
             //     always {
             //         junit 'target/surefire-reports/*.xml'
@@ -35,16 +36,13 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    // Use the 'withMaven' step to handle Maven tool configuration
-                    withMaven(
-                        maven: 'maven', 
-                        mavenSettingsConfig: 'your-maven-settings-id' 
-                    ) {
-                        sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=simple-java-maven-apps'
+                    // 'tool' directive is used to define tools in declarative pipelines
+                    def mvnHome = tool 'Maven'
+                    withSonarQubeEnv() {
+                        sh "${mvnHome}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=simple-java-maven-apps"
                     }
                 }
             }
         }
     }
 }
-
