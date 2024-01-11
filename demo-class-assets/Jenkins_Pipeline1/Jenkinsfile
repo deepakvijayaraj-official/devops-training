@@ -1,11 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        // Define the Maven tool with the name configured in Jenkins
-        maven 'Maven'
-    }
-
     stages {
         stage('Build') {
             steps {
@@ -41,12 +36,13 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    withMaven(maven: 'Maven') {
-                        sh "mvn clean verify sonar:sonar -Dsonar.projectKey=simple-java-maven-apps"
+                    // 'tool' directive is used to define tools in declarative pipelines
+                    def mvnHome = tool 'Default Maven'
+                    withSonarQubeEnv() {
+                        sh "${mvnHome}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=simple-java-maven-apps"
                     }
                 }
             }
         }
     }
 }
-
