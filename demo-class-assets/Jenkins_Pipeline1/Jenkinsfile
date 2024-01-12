@@ -36,14 +36,7 @@ pipeline {
                 }
             }
         }
-        stage('Debug') {
-    steps {
-        script {
-            sh 'ls -R'
-        }
-    }
-}
-
+        
         stage('SonarQube Analysis') {
             steps {
                 script {
@@ -51,8 +44,7 @@ pipeline {
                     def mvnHome = tool 'Maven'
                     dir('devops-training/simple-java-maven-apps/') {
                         withSonarQubeEnv() {
-                                            sh "${mvnHome}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=simple-java-maven-apps -f /devops-training/simple-java-maven-apps
-pom.xml"
+                                sh "${mvnHome}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=simple-java-maven-apps -f /devops-training/simple-java-maven-apps/"
 
                         }
                     }
