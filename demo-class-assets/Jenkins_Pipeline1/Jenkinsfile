@@ -6,7 +6,9 @@ pipeline {
             steps {
                 script {
                     // Using 'script' block for multiline shell commands
-                    sh 'cd simple-java-maven-apps; mvn -B -DskipTests clean package'
+                    dir('simple-java-maven-apps') {
+                        sh 'mvn -B -DskipTests clean package'
+                    }
                 }
             }
         }
@@ -14,7 +16,9 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    sh 'cd simple-java-maven-apps; mvn test'
+                    dir('simple-java-maven-apps') {
+                        sh 'mvn test'
+                    }
                 }
             }
             // You can uncomment the following block if you want to publish JUnit test results
@@ -38,8 +42,10 @@ pipeline {
                 script {
                     // 'tool' directive is used to define tools in declarative pipelines
                     def mvnHome = tool 'Maven'
-                    withSonarQubeEnv() {
-                        sh "${mvnHome}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=simple-java-maven-apps"
+                    dir('devops-training/simple-java-maven-apps/') {
+                        withSonarQubeEnv() {
+                            sh "${mvnHome}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=simple-java-maven-apps"
+                        }
                     }
                 }
             }
