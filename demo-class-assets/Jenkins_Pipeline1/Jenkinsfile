@@ -28,7 +28,15 @@ pipeline {
             //     }
             // }
         }
-stage('SonarQube Analysis') {
+
+        stage('Deliver') {
+            steps {
+                script {
+                    sh './demo-class-assets/Jenkins_Pipeline1/scripts/deliver.sh'
+                }
+            }
+        }
+        stage('SonarQube Analysis') {
             steps {
                 script {
                     // 'tool' directive is used to define tools in declarative pipelines
@@ -41,14 +49,6 @@ stage('SonarQube Analysis') {
                 }
             }
         }
-        stage('Deliver') {
-            steps {
-                script {
-                    sh './demo-class-assets/Jenkins_Pipeline1/scripts/deliver.sh'
-                }
-            }
-        }
-
         
     }
 }
