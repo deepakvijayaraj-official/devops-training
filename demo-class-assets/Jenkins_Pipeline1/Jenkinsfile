@@ -1,56 +1,33 @@
 pipeline {
     agent any
-
-    stages {
+	stages{
         stage('Build') {
             steps {
-                script {
-                    // Using 'script' block for multiline shell commands
-                    dir('simple-java-maven-apps') {
-                        sh 'mvn -B -DskipTests clean package'
-                    }
-                }
+                sh 'cd  simple-java-maven-apps; mvn -B -DskipTests clean package'
             }
         }
-
+		
         stage('Test') {
             steps {
-                script {
-                    dir('simple-java-maven-apps') {
-                        sh 'mvn test'
-                    }
-                }
+                sh 'cd  simple-java-maven-apps; mvn test'
             }
-            // You can uncomment the following block if you want to publish JUnit test results
+		
             // post {
             //     always {
             //         junit 'target/surefire-reports/*.xml'
             //     }
             // }
         }
-
         stage('Deliver') {
             steps {
-                script {
-                    sh './demo-class-assets/Jenkins_Pipeline1/scripts/deliver.sh'
-                }
+                sh './demo-class-assets/Jenkins_Pipeline1/scripts/deliver.sh'
             }
         }
-        
-        stage('SonarQube Analysis') {
-            steps {
-                script {
-                    // 'tool' directive is used to define tools in declarative pipelines
-                    def mvnHome = tool 'Maven'
-                    dir('devops-training/simple-java-maven-apps/') {
-                        withSonarQubeEnv() {
-                                sh "${mvnHome}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=simple-java-maven-apps"
-
-                        }
-                    }
-                }
-            }
-        }
-        
+		stage('SonarQube Analysis') {
+    def mvn = tool 'Maven';
+    withSonarQubeEnv() {
+      sh "${mvnHome}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=simple-java-maven-apps"
     }
+  }
+	}	
 }
