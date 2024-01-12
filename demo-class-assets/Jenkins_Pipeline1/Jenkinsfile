@@ -36,6 +36,14 @@ pipeline {
                 }
             }
         }
+        stage('Debug') {
+    steps {
+        script {
+            sh 'ls -R'
+        }
+    }
+}
+
         stage('SonarQube Analysis') {
             steps {
                 script {
