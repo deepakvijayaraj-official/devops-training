@@ -39,7 +39,7 @@ pipeline {
                     // 'tool' directive is used to define tools in declarative pipelines
                     def mvnHome = tool 'Maven'
                     withSonarQubeEnv() {
-                        sh "/usr/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=simple-java-maven-apps/"
+                        sh "/usr/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=Demo"
                     }
                 }
             }
