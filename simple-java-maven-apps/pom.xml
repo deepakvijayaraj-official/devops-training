@@ -26,8 +26,7 @@
 <activation>
 <activeByDefault>true</activeByDefault>
 </activation>
-<properties
-  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+<properties>
 <!-- Optional URL to server. Default value is http://localhost:9000 -->
 <sonar.host.url>
 http://192.168.2.174:9000
