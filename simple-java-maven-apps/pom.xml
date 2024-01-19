@@ -1,12 +1,20 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
+  
   <groupId>com.mycompany.app</groupId>
   <artifactId>my-app</artifactId>
-  <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
   <name>my-app</name>
   <url>https://maven.apache.org</url>
+  
+  <properties>
+    <!-- Optional URL to the SonarQube server. Default value is http://localhost:9000 -->
+    <sonar.host.url>http://localhost:9000</sonar.host.url>
+  </properties>
+  
   <dependencies>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -14,41 +22,19 @@
       <version>5.10.1</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-<groupId>org.sonarsource.scanner.maven</groupId>
-<artifactId>sonar-maven-plugin</artifactId>
-<version>3.2</version>
-</dependency>
   </dependencies>
- <profiles>
-  <profile>
-<id>sonar</id>
-<activation>
-<activeByDefault>true</activeByDefault>
-</activation>
-<properties>
-<!-- Optional URL to server. Default value is http://localhost:9000 -->
-<sonar.host.url>
-http://localhost:9000
-</sonar.host.url>
-</properties>
-</profile>
- </profiles>
-
   
   <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.12.1</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
     <plugins>
+      <!-- Compiler Plugin -->
       <plugin>
-        <!-- Build an executable JAR -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.12.1</version>
+      </plugin>
+
+      <!-- Jar Plugin -->
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <version>3.3.0</version>
@@ -62,6 +48,8 @@ http://localhost:9000
           </archive>
         </configuration>
       </plugin>
+
+      <!-- Enforcer Plugin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
@@ -85,22 +73,35 @@ http://localhost:9000
           </execution>
         </executions>
       </plugin>
-      <plugin>
-            <groupId>org.sonarsource.scanner.maven</groupId>
-            <artifactId>sonar-maven-plugin</artifactId>
-            <version>3.9.1.2184</version> <!-- Use the latest version available -->
 
-            <executions>
-                <execution>
-                    <phase>verify</phase>
-                    <goals>
-                        <goal>sonar</goal>
-                    </goals>
-                </execution>
-            </executions>
-        </plugin>
+      <!-- SonarQube Plugin -->
+      <plugin>
+        <groupId>org.sonarsource.scanner.maven</groupId>
+        <artifactId>sonar-maven-plugin</artifactId>
+        <version>3.9.1.2184</version> <!-- Use the latest version available -->
+        <executions>
+          <execution>
+            <phase>verify</phase>
+            <goals>
+              <goal>sonar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
-   
-    
   </build>
+
+  <profiles>
+    <profile>
+      <id>sonar</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <!-- Optional URL to the SonarQube server. Default value is http://localhost:9000 -->
+        <sonar.host.url>http://localhost:9000</sonar.host.url>
+      </properties>
+    </profile>
+  </profiles>
 </project>
+
