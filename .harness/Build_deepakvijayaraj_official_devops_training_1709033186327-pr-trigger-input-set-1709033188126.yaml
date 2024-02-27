@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_deepakvijayaraj_official_devops_training_1709033186327-pr-trigger-input-set
+  identifier: Build_deepakvijayaraj_official_devops_training_1709033186327prtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: default_project
+  pipeline:
+    identifier: Build_deepakvijayaraj_official_devops_training_1709033186327
+    properties:
+      ci:
+        codebase:
+          build:
+            type: PR
+            spec:
+              number: <+trigger.prNumber>
